@@ -82,17 +82,14 @@ import java.util.List;
         }
 
         public static String blastOff(int start) {
-    /*Метод принимает стартовое число (например, 5) и возвращает строку со всеми
-    числами до 1 и словом «Поехали!» в конце (например, «5 4 3 2 1 Поехали!»).*/
+            if (start < 1) return "Поехали!";
 
-            int count = start;
-            while (count > 1) {
-                System.out.print(count + " ");
-                count--;
-
+            StringBuilder sb = new StringBuilder();
+            for (int i = start; i >= 1; i--) {
+                sb.append(i).append(" ");
             }
-
-            return (count + " Поехали!");
+            sb.append("Поехали!");
+            return sb.toString();
         }
 
         public static int sumToN(int n) {
