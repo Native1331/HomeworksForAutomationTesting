@@ -1,8 +1,6 @@
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,83 +23,58 @@ public class Homework2 {
     }
 
 
-    @Test
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
     @Tag("NewTest")
     void testRandomNumber() {
         Random random = new Random();
         int n = random.nextInt(1, 100);
         boolean result = MyHomework.isEven(n);
         System.out.println("Тест. Определение четности числа." + "\nСлучайное число - " + n + "\nЯвляется ли ожидаемое  число четным?  " + result);
-        boolean actual = (n % 2 == 0);
-        if (result == actual) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        boolean actual = (n % 2 == 1);
+        Assertions.assertEquals(actual, result);
     }
 
 
-    @RepeatedTest(value = 20, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
     @DisplayName("Тест допуска по возрасту (повторяемый)")
+    @Tag("SpecialTest")
     void testCheckAccessStatus() {
         Random random = new Random();
-        int age = random.nextInt(1, 100);
+        int age = random.nextInt(0, 18);
         String result = MyHomework.checkAccess(age);
-        System.out.println("Тест. Определение возможности допуска по возрасту(старше 18 лет)");
-        String actual = (age > 18) ? "Allowed" : "Denied";
-        System.out.println("Возраст: " + age);
-        System.out.println("Ожидаемый результат: " + result);
-        System.out.println("Фактический результат: " + actual);
-        assertEquals(result, actual, "TEST PASSED");
+        String actual = "Allowed";
+        assertEquals(result, actual, "TEST FAILED");
     }
 
 
+    @Tag("SpecialTest")
     @ParameterizedTest
-    @ValueSource(ints = {0, 21, 41, 61, 81, 101})
-    void testGetGrade(int scores) {
+    @CsvSource({
+            "0, Ф",
+            "21, D",
+            "41, C",
+            "61, B",
+            "81, A",
+            "101, Error"
+    })
+    void testGetGrade(int scores, String expected) {
         String result = MyHomework.getGrade(scores);
-        if (result == null) {
-            System.out.println("Результат пустой");
-        } else {
-            System.out.println("Тест. Соотнесение цифры и буквы в зависимости от  диапазона цифр!\n" +
-                    "Числа от 0 до 20 - Е, от 20 до 40 - D, от 40 до 60 - C, от 60 до 80-B, от 80 до 100-A.\nЧисло:" + scores + "\nРезультат == " + result + "\nTEST PASSED");
-        }
+        Assertions.assertEquals(expected, result);
     }
 
-    @ParameterizedTest
-    @CsvSource({"0,E", "21,D", "41,C", "61,B", "81,A", "101,A"})
-    void anotherTestGetGrade(int scores, String result) {
-        System.out.println("Альтернативный тест. Соотнесение цифры и буквы в зависимости от  диапазона цифр!");
-        String expectedResult = MyHomework.getGrade(scores);
-        if (expectedResult.equals(result)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
-    }
-
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testIsPositive() {
         Random random = new Random();
         int n = random.nextInt(-50, 100);
         boolean result = MyHomework.isPositive(n);
         boolean actual = (n >= 0);
-        System.out.println("Cпециальный тест.Проверка положительности числа.\nЧисло: " + n);
-        if (n >= 0) {
-            System.out.println("Число положительное!");
-        } else {
-            System.out.println("Число отрицательное!");
-        }
-        if (actual == result) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        Assertions.assertEquals(result, actual);
+
     }
 
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testBlastOff() {
         int start = 5;
         String result = MyHomework.blastOff(start);
@@ -109,102 +82,71 @@ public class Homework2 {
         System.out.println("Специальный тест. Обратный отсчет!");
         System.out.println("Ожидаемый результат:" + result);
         System.out.println("Фактический результат:" + expected);
-        if (result.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        Assertions.assertEquals(result, expected, "TEST PASSED");
     }
 
-
-    @Tag("Special Test")
+    @Tag("SpecialTest")
     @ParameterizedTest
-    @CsvSource({"5, 5 4 3 2 1 Поехали!",
-            "4, 4 3 2 1 Поехали!",
-            "3, 3 2 1 Поехали!",
-            "2,  2 1 Поехали!",
-            "1,  1 Поехали!"})
+    @CsvSource({"5,  4 3 2 1 Поехали!",
+            "4,  3 2 1 Поехали!",
+            "3,  2 1 Поехали!",
+            "2,   1 Поехали!",
+            "1,   Поехали!"})
     void testAnotherOfBlastOff(int start, String result) {
-        System.out.println("Тест. Обратный отсчет!");
         String expectedResult = MyHomework.blastOff(start);
-        System.out.println("Ожидаемый результат: " + result);
-        System.out.println("Фактический результат: " + expectedResult);
-        if (expectedResult.equals(result)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        Assertions.assertEquals(result, expectedResult, "TEST PASSED");
     }
 
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testSumToN() {
         System.out.println("Тест. Сумма всех чисел!");
         int result = MyHomework.sumToN(5);
-        int expected = 15;
+        int expected = 5;
         System.out.println("Фактическое значение:" + result);
         System.out.println("Ожидаемое значение:" + expected);
-
-        if (result == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        Assertions.assertEquals(result, expected, "TEST FAILED");
     }
 
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testHasBug() {
         System.out.println("Тест.Проверка на наличие слова 'BUG'!");
 
         String[] list = {"BUG", "DAY", "BUN", "FUN"};
         Boolean result = MyHomework.hasBug(list);
-        Boolean expected = true;
+        Boolean expected = false;
         System.out.println("Фактическое значение:" + result);
         System.out.println("Ожидаемое значение:" + expected);
-        if (result == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
-        assertEquals(expected, result, "TEST PASSED!");
+        assertEquals(expected, result, "TEST FAILED!");
     }
 
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testGetInRange() {
         System.out.println("Тест!Чётные числа внутри диапазона!");
         String result = MyHomework.getEventInRange(2, 5);
-        String expected = "2 4";
+        String expected = "2 5";
         System.out.println("Фактическое значение:" + result);
         System.out.println("Ожидаемое значение:" + expected);
-        if (result.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
-
+        Assertions.assertEquals(result, expected, "TEST FAILED!");
     }
 
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testFindMax() {
         System.out.println("Тест! Максимальное  число внутри диапазона!");
         int[] numbers = {5, 6, 22, 55, 111};
         Integer result = MyHomework.findMax(numbers);
-        Integer expected = 111;
+        Integer expected = 11;
         System.out.println("Фактическое значение:" + result);
         System.out.println("Ожидаемое значение:" + expected);
-        if (result == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        Assertions.assertEquals(result, expected, "TEST FAILED!");
 
     }
 
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testReverse() {
         System.out.println("Тест! Обратный порядок в массиве!");
         String[] arr = {"One", "Two", "Zero"};
@@ -216,39 +158,28 @@ public class Homework2 {
 
     }
 
-
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testCalcAverage() {
         System.out.println("Тест! Среднее значение суммы всех чисел  в массиве!");
         List<Integer> list = Arrays.asList(5, 6, 7, 5, 8, 3);
         int result = MyHomework.calcAverage(list);
-        int expected = 5;
+        int expected = 6;
         System.out.println("Фактическое значение:" + result);
         System.out.println("Ожидаемое значение:" + expected);
-        assertEquals(expected, result, "TEST PASSED");
-        if (result == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(expected, result, "TEST FAILED!");
     }
 
-    @Test
-    @Tag("Special Test")
+    @RepeatedTest(value = 10, name = "Повтор {currentRepetition} из {totalRepetitions} ")
+    @Tag("SpecialTest")
     void testRemoveSpecificName() {
         System.out.println("Тест! Исключение имени из списка!");
         List<String> list = Arrays.asList("РОЗА", "Мимоза", "Ромашка", "АСТРА");
         List result = MyHomework.removeSpecificName(list, "РОЗА");
-        List<String> expected = Arrays.asList("Мимоза", "Ромашка", "АСТРА");
+        List<String> expected = Arrays.asList("Химоза", "Ромашка", "АСТРА");
         System.out.println("Фактическое значение:" + result);
         System.out.println("Ожидаемое значение:" + expected);
-        assertEquals(expected, result, "TEST PASSED");
-        if (result.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(expected, result, "TEST FAILED!");
 
 
     }
