@@ -21,6 +21,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
 // Source: https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:3.27.7")
+    // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    implementation("io.rest-assured:rest-assured:5.5.6")
 }
 
 kotlin {
@@ -51,6 +53,15 @@ tasks.register<Test>("newAutotests") {
     useJUnitPlatform {
         includeTags("newAutotests")
     }}
+tasks.register<Test>("restAssuredTests"){
+    useJUnitPlatform{includeTags("RestAssuredTests")}
+}
+tasks.register<Test>("assertJTest"){
+    useJUnitPlatform{includeTags("AssertJTest")}
+}
+tasks.register<Test>("statusCodeTest"){
+    useJUnitPlatform(){includeTags("StatusCodeTest")}
+}
 
 tasks.register("Tests") {
     doLast { println("Test run is over") }}
