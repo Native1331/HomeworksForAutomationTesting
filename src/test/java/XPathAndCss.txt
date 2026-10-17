@@ -1,0 +1,47 @@
+public class XPathAndCss {
+    /*Задача 1: написать локаторы (допускаются и CSS-,
+                                 и XPath-локаторы) для следующих элементов:
+1.1. Список названий товаров.
+1.2. Список цен товаров.
+1.3. Название товара с ценой 25 (добавьте через админку).
+1.4. Цена товара с названием «Стакан» (добавьте через админку).
+1.5. Список карточек товаров в корзине.
+1.6. Кнопка корзины.*/
+
+    firstElementXpath="//th[text()='Название']";
+    firstElementXpath1="//th[contains(text(), 'Название')]";
+    firstElementCSS="#n-name"
+
+    secondElementXpath="//*[@id='n-price']";
+    secondElementXpath1="//th[сontains(.,'Цена')]";
+    secondElementCSS="#n-price";
+
+
+    thirdElementXpath="//*[@id='nm-40']";
+    thirdElementCss="#nm-40";
+    thirdElementCSS1="input[value='Стакан']"
+
+    fourthElementXpath="//*[@id='pr-40']";
+    fourthElementСSS="#pr-40";
+    fourthElementCSS="input[value='25']"
+
+    fifthElementXpath="[id='cart-item-40']"
+    fifthElementXpath="//*[@id="cart-item-40]";
+    fifthElementCss="#cart-item-40";
+
+    sixthElementXpath1="//*[@id='open-cart-btn']";
+    sixthElementXpath="//button[@id='open-cart-btn']";
+    seventhElementCSS="#cart_count.
+
+
+
+
+
+
+
+
+
+
+}
+
+
