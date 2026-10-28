@@ -133,6 +133,6 @@ public class SeleniumTests {
 
         assertThat(modalText)
                 .as("Товары должны сохраняться в корзине после обновления страницы")
-                .doesNotContain("Товар для проверки корзины");
+                .contains("Товар для проверки корзины");
     }
 }
