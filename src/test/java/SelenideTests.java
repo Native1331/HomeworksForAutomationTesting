@@ -317,7 +317,7 @@ public class SelenideTests {
                 .statusCode(200)
                 .log().all();
         $$(".product-card")
-                .filter(text("Первый товар"))
+                .filter(text("Dolls"))
                 .shouldHave(sizeGreaterThan(0), Duration.ofSeconds(10));
 
     }
