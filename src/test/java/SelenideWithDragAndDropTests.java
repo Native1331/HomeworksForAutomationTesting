@@ -34,7 +34,7 @@ public class SelenideWithDragAndDropTests {
 
     private void cleanUpTestData() {
         try {
-            System.out.println("🧹 Начинаем очистку тестовых данных...");
+            System.out.println(" Начинаем очистку тестовых данных...");
 
             String[] testProductNames = {
                     "Первый товар"
