@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.org.junit.platform.launcher.TagFilter.includeTags
-
 plugins {
     id("java")
     kotlin("jvm")
@@ -12,6 +10,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -23,7 +22,33 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.27.7")
     // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
     implementation("io.rest-assured:rest-assured:5.5.6")
+    implementation("org.seleniumhq.selenium:selenium-java:4.51.0")
+    testImplementation("org.testng:testng:7.10.2")
+    implementation("org.seleniumhq.selenium:selenium-devtools-v155:4.51.0")
+    testImplementation("com.codeborne:selenide:7.19.0")
+    // Source: https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    implementation("org.projectlombok:lombok:1.18.46")
+    // Source: https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
+    implementation("org.slf4j:slf4j-api:2.0.18")
+    testCompileOnly("org.projectlombok:lombok:1.18.46")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
+    runtimeOnly("ch.qos.logback:logback-classic:1.4.14")
+    implementation("org.slf4j:slf4j-api:2.0.9")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
+    // Source: https://mvnrepository.com/artifact/org.aeonbits.owner/owner
+    implementation("org.aeonbits.owner:owner:1.0.12")
 }
+
+
+tasks.test {
+    useJUnitPlatform()
+    maxParallelForks = 4
+
+    // или: maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1)
+
+   }
 
 kotlin {
     jvmToolchain(21)
@@ -31,28 +56,6 @@ kotlin {
 tasks.test {
     useJUnitPlatform ()
        }
-
-tasks.register<Test>("specialTests") {
-    // Явно указываем classpath
-    classpath = sourceSets["test"].runtimeClasspath
-    testClassesDirs = sourceSets["test"].output
-    useJUnitPlatform {
-        includeTags("SpecialTest")
-    }
-
-    maxParallelForks = 2
-    testLogging {
-        events("passed", "failed", "skipped")
-        showStandardStreams = true
-    }
-}
-tasks.register<Test>("newAutotests") {
-    // Явно указываем classpath
-    classpath = sourceSets["test"].runtimeClasspath
-
-    useJUnitPlatform {
-        includeTags("newAutotests")
-    }}
 tasks.register<Test>("restAssuredTests"){
     useJUnitPlatform{includeTags("RestAssuredTests")}
 }
@@ -61,6 +64,18 @@ tasks.register<Test>("assertJTest"){
 }
 tasks.register<Test>("statusCodeTest"){
     useJUnitPlatform(){includeTags("StatusCodeTest")}
+}
+tasks.register<Test>("seleniumTests"){
+    useJUnitPlatform{includeTags("SeleniumTests")}
+}
+tasks.register<Test>("selenideTests"){
+    useJUnitPlatform{includeTags("SelenideTests")}
+}
+tasks.register<Test>("drAndDrTests"){
+    useJUnitPlatform{includeTags("DrAndDrTests")}
+    }
+tasks.register<Test>("selenideWithPropertiesTests"){
+    useJUnitPlatform{includeTags("SelenideWithPropertiesTests")}
 }
 
 tasks.register("Tests") {

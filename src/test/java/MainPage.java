@@ -82,5 +82,6 @@ public class MainPage {
         } finally {
             driver.quit();
         }
-    }}
+    }
+}
 
