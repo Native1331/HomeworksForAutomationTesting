@@ -258,8 +258,8 @@ public class SelenideWithPropertiesTests {
     @Tag("SelenideWithPropertiesTests")
     void updateProduct() {
         $(".btn-outline").shouldBe(Condition.clickable).click();
-        $("input[placeholder='Username']").setValue(Credentials.ADMIN_LOGIN);
-        $("input[placeholder='Password']").setValue(Credentials.ADMIN_PASSWORD);
+         $("input[placeholder='Username']").setValue(adminLogin);
+        $("input[placeholder='Password']").setValue(adminPassword);
         $("button.primary").click();
         $("#n-name").setValue("Самый лучший");
         $("#n-price").setValue("50");
