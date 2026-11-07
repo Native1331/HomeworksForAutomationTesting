@@ -32,38 +32,49 @@ public class SelenideWithDragAndDropTests {
     }
 
 
+    
     private void cleanUpTestData() {
-        try {
-            System.out.println(" Начинаем очистку тестовых данных...");
+    
+        List<String> targetNames = Arrays.asList(
+                "Дорогой товар", "Очень дорогой товар", "Товар для успеха",
+                "Ещё один товар", "Самый лучший", "Не дорогой товар",
+                "Не очень дорогой товар", "Совсем не дорогой товар",
+                "Проверка модального окна", "Первый товар", "Второй товар",
+                "Третий товар", "Модальное окно", "Dolls"
+        );
 
-            String[] testProductNames = {
-                    "Первый товар"
+        List<Map<String, Object>> allGoods = given()
+                .spec(postBasicRQ)
+                .auth().basic("admin", "secret123")
+                .when()
+                .get("/goods/list")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getList("goods");
 
-            };
+        if (allGoods == null || allGoods.isEmpty()) {
+            System.out.println("Нет товаров для очистки — ничего не удаляем.");
+            return;}
 
-            for (String name : testProductNames) {
-                var productRow = $$x("//div[contains(text(), '" + name + "')]")
-                        .filter(visible)
-                        .first();
+        for (Map<String, Object> good : allGoods) {
+            String name = (String) good.get("name");
+            if (targetNames.contains(name)) {
+                int id = ((Number) good.get("id")).intValue();
 
-                if (productRow.exists()) {
-                    var deleteBtn = productRow.find("button[data-action='delete']");
-
-                    if (deleteBtn.exists()) {
-                        deleteBtn.click();
-                        System.out.println(" Товар '" + name + "' удалён.");
-
-                    } else {
-                        System.out.println(" Кнопка удаления не найдена для '" + name + "'. Товар есть, но удалить не удалось.");
-                    }
-                } else {
-                    System.out.println(" Товар '" + name + "' не найден на странице. Возможно, он не создавался в этом прогоне.");
-                }
+                given()
+                        .spec(postBasicRQ)
+                        .auth().basic("admin", "secret123")
+                        .pathParam("id", id)
+                        .when()
+                        .delete("/goods/{id}")
+                        .then()
+                        .log().all()
+                        .statusCode(200);
             }
-        } catch (Exception e) {
-            System.err.println(" Ошибка при очистке тестовых данных: " + e.getMessage());
-        }
-    }
+        }}
 
     @Test
     @Tag("DrAndDrTests")
