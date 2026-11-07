@@ -33,7 +33,7 @@ public class SelenideTests {
 
     private void cleanUpTestData() {
         try {
-            System.out.println("🧹 Начинаем очистку тестовых данных...");
+            System.out.println(" Начинаем очистку тестовых данных...");
 
             String[] testProductNames = {
                     "Дорогой товар",
